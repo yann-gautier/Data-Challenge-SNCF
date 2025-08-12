@@ -41,9 +41,14 @@ X_test.columns = (
       .str.strip('_')  # supprime "_" en début/fin
 )
 
+from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+y_encoded = le.fit_transform(y)
+
 # 3. Train/test split
 X_train, X_ev, y_train, y_ev = train_test_split(
-    X, y, test_size=0.2, random_state=42
+    X, y_encoded, test_size=0.2, random_state=42
 )
 
 # 4. Dataset LightGBM
@@ -79,3 +84,4 @@ model = lgb.train(
 # 7. Prédictions
 y_pred_proba = model.predict(X_test)  # probabilités par classe
 y_pred = y_pred_proba.argmax(axis=1)  # choisir classe la plus probable
+y_pred_classes = le.inverse_transform(y_pred)
