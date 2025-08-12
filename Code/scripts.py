@@ -23,6 +23,11 @@ X_test["jour_semaine"] = X_test["date"].dt.weekday
 X_test["heure"] = X_test["date"].dt.hour
 X_test["mois"] = X_test["date"].dt.month
 
+for col in X.select_dtypes(include=["datetime64[ns]"]):
+    X[col] = X[col].astype("int64") // 10**9
+
+for col in X_test.select_dtypes(include=["datetime64[ns]"]):
+    X_test[col] = X_test[col].astype("int64") // 10**9
 
 # 3. Train/test split
 X_train, X_ev, y_train, y_ev = train_test_split(
