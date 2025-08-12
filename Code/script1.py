@@ -82,7 +82,6 @@ model = lgb.train(
     ]
 )
 
-
 # Prédictions
 y_pred_proba = model.predict(X_test)  # probabilités par classe
 y_pred = y_pred_proba.argmax(axis=1)  # choisir classe la plus probable
