@@ -29,6 +29,24 @@ for col in X.select_dtypes(include=["datetime64[ns]"]):
 for col in X_test.select_dtypes(include=["datetime64[ns]"]):
     X_test[col] = X_test[col].astype("int64") // 10**9
 
+X.columns = (
+    X.columns
+      .str.replace('[^A-Za-z0-9_]+', '_', regex=True)  # remplace caractères spéciaux par "_"
+      .str.strip('_')  # supprime "_" en début/fin
+)
+
+X_test.columns = (
+    X_test.columns
+      .str.replace('[^A-Za-z0-9_]+', '_', regex=True)  # remplace caractères spéciaux par "_"
+      .str.strip('_')  # supprime "_" en début/fin
+)
+
+y.columns = (
+    y.columns
+      .str.replace('[^A-Za-z0-9_]+', '_', regex=True)  # remplace caractères spéciaux par "_"
+      .str.strip('_')  # supprime "_" en début/fin
+)
+
 # 3. Train/test split
 X_train, X_ev, y_train, y_ev = train_test_split(
     X, y, test_size=0.2, random_state=42
