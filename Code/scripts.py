@@ -41,12 +41,6 @@ X_test.columns = (
       .str.strip('_')  # supprime "_" en début/fin
 )
 
-y.columns = (
-    y.columns
-      .str.replace('[^A-Za-z0-9_]+', '_', regex=True)  # remplace caractères spéciaux par "_"
-      .str.strip('_')  # supprime "_" en début/fin
-)
-
 # 3. Train/test split
 X_train, X_ev, y_train, y_ev = train_test_split(
     X, y, test_size=0.2, random_state=42
