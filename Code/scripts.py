@@ -9,14 +9,29 @@ X = pd.read_csv("C:/Users/yanno/OneDrive/Bureau/Data Challenge SNCF/Données/x_t
 y = pd.read_csv("C:/Users/yanno/OneDrive/Bureau/Data Challenge SNCF/Données/y_train_final_j5KGWWK.csv")["p0q0"]
 X_test= pd.read_csv("C:/Users/yanno/OneDrive/Bureau/Data Challenge SNCF/Données/x_test_final.csv")
 
+for col in ["train", "gare"]:
+    X[col] = X[col].astype("category")
+    X_test[col] = X_test[col].astype("category")
+
+X["date"] = pd.to_datetime(X["date"])
+X["jour_semaine"] = X["date"].dt.weekday
+X["heure"] = X["date"].dt.hour
+X["mois"] = X["date"].dt.month
+
+X_test["date"] = pd.to_datetime(X_test["date"])
+X_test["jour_semaine"] = X_test["date"].dt.weekday
+X_test["heure"] = X_test["date"].dt.hour
+X_test["mois"] = X_test["date"].dt.month
+
+
 # 3. Train/test split
 X_train, X_ev, y_train, y_ev = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
 # 4. Dataset LightGBM
-train_data = lgb.Dataset(X_train, label=y_train)
-ev_data = lgb.Dataset(X_ev, label=y_ev)
+train_data = lgb.Dataset(X_train, label=y_train, categorical_feature=["train", "gare"])
+ev_data = lgb.Dataset(X_ev, label=y_ev, categorical_feature=["train", "gare"])
 
 # 5. Paramètres LightGBM
 params = {
