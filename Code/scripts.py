@@ -87,3 +87,9 @@ model = lgb.train(
 y_pred_proba = model.predict(X_test)  # probabilités par classe
 y_pred = y_pred_proba.argmax(axis=1)  # choisir classe la plus probable
 y_pred_classes = le.inverse_transform(y_pred)
+
+df_preds = pd.DataFrame({
+    "id": X_test.index,         # si ton test a un index
+    "prediction": y_pred_classes
+})
+df_preds.to_csv("predictions.csv", index=False)
