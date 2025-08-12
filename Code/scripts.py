@@ -30,14 +30,19 @@ params = {
 }
 
 # 6. Entraînement
+from lightgbm import early_stopping, log_evaluation
+
 model = lgb.train(
     params,
     train_data,
     valid_sets=[train_data, ev_data],
     num_boost_round=1000,
-    early_stopping_rounds=50,
-    verbose_eval=100
+    callbacks=[
+        early_stopping(stopping_rounds=50),
+        log_evaluation(period=100)  # affichage tous les 100 tours
+    ]
 )
+
 
 # 7. Prédictions
 y_pred_proba = model.predict(X_test)  # probabilités par classe
