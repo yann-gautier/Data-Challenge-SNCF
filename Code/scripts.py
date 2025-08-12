@@ -41,6 +41,8 @@ X_test.columns = (
       .str.strip('_')  # supprime "_" en début/fin
 )
 
+X=X.drop('Unnamed_0_1',axis=1)
+
 from sklearn.preprocessing import LabelEncoder
 
 le = LabelEncoder()
